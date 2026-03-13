@@ -25,6 +25,7 @@ IMPORTANT RULES FOR REGEX PATTERNS:
 - Patterns are applied line-by-line to source files
 - Use case-insensitive matching where appropriate (the engine applies IGNORECASE automatically)
 - Patterns must be valid Python re module syntax
+- CRITICAL: You MUST properly double-escape all backslashes in the output JSON format. For example, a regex matching whitespace MUST be written as "\\\\s" (not "\\s").
 - BE COMPREHENSIVE AND STRICT: Do not just flag obvious secrets. Flag weak patterns like empty passwords, short passwords (e.g. less than 8 chars), or obvious placeholders like '123456', 'test', 'password'.
 - Examples of good, robust patterns:
   * Hardcoded secrets/tokens: (password|secret|api_key|token)\\s*=\\s*["\'][^"\']{8,}["\']

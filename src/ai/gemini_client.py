@@ -37,14 +37,18 @@ class GeminiClient:
                 temperature=0.2,
             ),
         )
-        raw = response.text.strip()
+        raw = response.text.strip() if response.text else ""
 
-        # Strip markdown fencing if Gemini added it despite instructions
+        # Strip markdown fencing
         if raw.startswith("```"):
             raw = raw.split("```", 2)[1]
             if raw.startswith("json"):
                 raw = raw[4:]
             raw = raw.rsplit("```", 1)[0].strip()
+
+        # Some models use unescaped single quotes or backslashes incorrectly inside strings
+        # We manually escape backslashes first to preserve regex, but avoid double escaping
+        raw = raw.replace('\\', '\\\\').replace('\\\\"', '\\"').replace("\\\\'", "'")
 
         try:
             result = json.loads(raw)
