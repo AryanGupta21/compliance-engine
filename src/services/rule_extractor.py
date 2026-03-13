@@ -1,7 +1,7 @@
 import logging
 import re
 
-from src.ai.claude_client import ClaudeClient
+from src.ai.gemini_client import GeminiClient
 from src.config import settings
 
 logger = logging.getLogger(__name__)
@@ -15,7 +15,7 @@ VALID_CATEGORIES = {
 
 class RuleExtractor:
     def __init__(self) -> None:
-        self.claude = ClaudeClient()
+        self.gemini = GeminiClient()
 
     def _chunk_text(self, text: str, chunk_size: int, overlap: int = 500) -> list[str]:
         """
@@ -78,7 +78,7 @@ class RuleExtractor:
 
         for i, chunk in enumerate(chunks):
             try:
-                chunk_rules = await self.claude.extract_rules(
+                chunk_rules = await self.gemini.extract_rules(
                     text_chunk=chunk,
                     document_name=document_name,
                     chunk_index=i + 1,
