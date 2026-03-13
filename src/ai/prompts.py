@@ -25,11 +25,12 @@ IMPORTANT RULES FOR REGEX PATTERNS:
 - Patterns are applied line-by-line to source files
 - Use case-insensitive matching where appropriate (the engine applies IGNORECASE automatically)
 - Patterns must be valid Python re module syntax
-- Focus on patterns with low false-positive rates
-- Examples of good patterns:
-  * Hardcoded secrets: (password|secret|api_key|token)\\s*=\\s*["\'][^"\']{8,}["\']
+- BE COMPREHENSIVE AND STRICT: Do not just flag obvious secrets. Flag weak patterns like empty passwords, short passwords (e.g. less than 8 chars), or obvious placeholders like '123456', 'test', 'password'.
+- Examples of good, robust patterns:
+  * Hardcoded secrets/tokens: (password|secret|api_key|token)\\s*=\\s*["\'][^"\']{8,}["\']
+  * Weak/Short passwords: (password|pass|pwd)\\s*=\\s*["\']([^"\']{0,7}|123456|test|password|admin)["\']
   * Disabled SSL verification: verify\\s*=\\s*False
-  * Weak hash: \\b(md5|sha1)\\s*\\(
+  * Weak crypto hash: \\b(md5|sha1)\\s*\\(
   * Eval usage: \\beval\\s*\\(
   * SQL string concat: (execute|query)\\s*\\(.*\\+.*\\)
   * Debug mode enabled: DEBUG\\s*=\\s*True

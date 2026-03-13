@@ -64,7 +64,6 @@ class ValidationEngine:
                                 matched_text=line.strip()[:200],
                             )
                         )
-                        break  # one match per pattern per file is enough
 
         return matches
 
